@@ -1,2 +1,0 @@
-# WordGuessGame
-Created with CodeSandbox
