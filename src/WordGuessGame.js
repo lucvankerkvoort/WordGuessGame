@@ -4,12 +4,17 @@ import { object } from "prop-types";
 
 class WordGuessGame extends React.Component {
   state = {
-    guessesLeft: 10,
     answer: [],
     guessedLetters: [],
     blanks: []
   };
+
   guessed = [];
+  message = "";
+  guessesLeft = 10;
+  win = false;
+  indexNumber;
+
   componentDidMount() {
     document.addEventListener("keydown", this.game);
     const options = Object.keys(bands).splice("");
@@ -33,17 +38,55 @@ class WordGuessGame extends React.Component {
         correctLetters[i] = answer[i];
       }
     }
-    this.guessed.push(input);
-    console.log("this.guessed", this.guessed);
-    this.setState({ blanks: correctLetters, guessedLetters: this.guessed });
+    if (this.guessed.indexOf(input) === -1) {
+      this.guessed.push(input);
+      this.message = "";
+    } else {
+      this.guessesLeft++;
+      this.message = "You already used that letter, try another";
+    }
+
+    if (answer.indexOf(input) > 0) {
+      console.log("i run");
+    } else {
+      this.guessesLeft--;
+    }
+
+    let winner = this.state.answer.join("");
+    this.indexNumber = bands.indexOf(winner);
+
+    if (this.state.blanks.indexOf("-") === -1) {
+      alert("You win!");
+      this.win = true;
+    } else if (this.guessesLeft === 0) {
+      alert("You Lose!!");
+    }
+
+    const letters = this.guessed.toString();
+    this.setState({
+      blanks: correctLetters,
+      guessedLetters: letters
+    });
   };
   render() {
-    console.log("answer", this.state.answer);
     return (
-      <div>
-        <h1>{this.state.blanks}</h1>
-        <h1>Guesses Left: {this.state.guessesLeft}</h1>
-        <h1>Guessed Letters: {this.state.guessedLetters}</h1>
+      <div className="wordguessgame">
+        <div className="scores">
+          <h1>{this.state.blanks}</h1>
+          <h1>Guesses Left: {this.guessesLeft}</h1>
+          <h1>Guessed Letters: {this.state.guessedLetters}</h1>
+          <h1>{this.message}</h1>
+        </div>
+        {this.win ? (
+          <iframe
+            width="560"
+            height="315"
+            src={bands[this.indexNumber].youtube}
+            frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        ) : null}
       </div>
     );
   }
