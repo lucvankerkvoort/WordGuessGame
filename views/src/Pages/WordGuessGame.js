@@ -1,6 +1,5 @@
 import React from "react";
-import { bands } from "./artists";
-import { object } from "prop-types";
+import { bands } from "../Components/artists";
 
 class WordGuessGame extends React.Component {
   state = {
@@ -13,7 +12,7 @@ class WordGuessGame extends React.Component {
   message = "";
   guessesLeft = 10;
   win = false;
-  indexNumber;
+  winner;
 
   componentDidMount() {
     document.addEventListener("keydown", this.game);
@@ -53,8 +52,8 @@ class WordGuessGame extends React.Component {
     }
 
     let winner = this.state.answer.join("");
-    this.indexNumber = bands.indexOf(winner);
 
+    console.log(bands.(winner));
     if (this.state.blanks.indexOf("-") === -1) {
       alert("You win!");
       this.win = true;
@@ -81,7 +80,7 @@ class WordGuessGame extends React.Component {
           <iframe
             width="560"
             height="315"
-            src={bands[this.indexNumber].youtube}
+            src={this.winner.youtube}
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
